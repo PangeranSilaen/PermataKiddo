@@ -9,8 +9,10 @@ Pada Pekan 10, fokus utama adalah merancang struktur database dan membangun kera
 
 ## Accomplished Tasks
 - **Membuat ERD dan Tabel Relasional Awal**
-  [LINK TABEL RELASIONAL](https://github.com/PangeranSilaen/PermataKiddo/blob/cafa2507bc142531a041e6a96d2c9cce9c1039c6/Laporan/Gambar/Tabel%20Relasional.jpg)
-  [LINK ERD]()
+  
+  [Link Tabel Relasional](https://github.com/PangeranSilaen/PermataKiddo/blob/cafa2507bc142531a041e6a96d2c9cce9c1039c6/Laporan/Gambar/Tabel%20Relasional.jpg)
+  
+  [Link ERD]()
 
   Berikut adalah penjelasan detail untuk ERD (Entity-Relationship Diagram) yang telah dibuat:
 
@@ -147,7 +149,7 @@ Pada Pekan 10, fokus utama adalah merancang struktur database dan membangun kera
 
   ### Kesimpulan
 
-  ERD ini memberikan gambaran yang jelas tentang struktur basis data yang diperlukan untuk sistem PermataKiddo. Dengan menggunakan ERD ini, pengembang dapat mengimplementasikan basis data yang efisien dan sesuai dengan kebutuhan aplikasi.
+  ERD ini memberikan gambaran yang jelas tentang struktur basis data yang diperlukan untuk sistem PermataKiddo.
 
 - **Membuat Frontend Skeleton (Halaman Dasar Filament dengan Routing)**
   * Berhasil membuat resource dasar di Filament (misalnya `UserResource`, `StudentResource`, `TeacherResource`).
@@ -347,10 +349,11 @@ Pada Pekan 10, fokus utama adalah merancang struktur database dan membangun kera
 - Persiapan demo singkat progres Pekan 10 dan 11 untuk mitra.
 
 ## Contributions
-- **Avhilla Catton Andalucia**: [Deskripsi kontribusi Avhilla, misal: Merancang ERD bagian X, Implementasi Model Y]
-- **Maulana Malik Ibrahim**: [Deskripsi kontribusi Maulana, misal: Implementasi Migrasi Database, Membuat Resource Filament Z]
-- **Pangeran Borneo Silaen**: [Deskripsi kontribusi Pangeran, misal: Setup Proyek Awal, Konfigurasi Filament Panel, Membuat Resource Filament A]
-- **Varrel Kaleb Ropard Pasaribu**: [Deskripsi kontribusi Varrel, misal: Analisis Kebutuhan ERD, Membuat Resource Filament B, Dokumentasi]
+- **Avhilla Catton Andalucia**: Merancang ERD
+- **Maulana Malik Ibrahim**: Membuat ERD
+- **Pangeran Borneo Silaen**: etup Proyek Awal, Konfigurasi Filament Panel, Membuat Resource Filament A
+- **Varrel Kaleb Ropard Pasaribu**: Analisis Kebutuhan ERD, Dokumentasi]
 
 ## Screenshots / Demo
-[Link ke Screenshot atau Video Demo Singkat Pekan 10] // <-- *Silakan edit link ini*
+[Link Gambar 1](https://github.com/PangeranSilaen/PermataKiddo/blob/main/Laporan/Gambar/admin.png)
+[Link Gambar 2](https://github.com/PangeranSilaen/PermataKiddo/blob/main/Laporan/Gambar/admin1.png)
