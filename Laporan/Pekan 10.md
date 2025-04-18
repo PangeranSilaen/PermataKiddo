@@ -351,7 +351,7 @@ Pada Pekan 10, fokus utama adalah merancang struktur database dan membangun kera
 ## Contributions
 - **Avhilla Catton Andalucia**: Merancang ERD
 - **Maulana Malik Ibrahim**: Membuat ERD
-- **Pangeran Borneo Silaen**: etup Proyek Awal, Konfigurasi Filament Panel, Membuat Resource Filament A
+- **Pangeran Borneo Silaen**: Setup Proyek Awal, Konfigurasi Filament Panel, Membuat Resource Filament A
 - **Varrel Kaleb Ropard Pasaribu**: Analisis Kebutuhan ERD, Dokumentasi]
 
 ## Screenshots / Demo
