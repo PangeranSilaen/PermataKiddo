@@ -1,19 +1,22 @@
 # Laporan Progres Mingguan - PermataKiddo
-**Kelompok**: 11
-**Mitra**: TK Permata Bunda
-**Pekan ke-**: 10
-**Tanggal**: 18/04/2025
+**Kelompok**: 11 <br>
+**Mitra**: TK Permata Bunda <br>
+**Pekan ke-**: 10 <br>
+**Tanggal**: 18/04/2025 <br>
+
+- **Avhilla Catton Andalucia**: 10231021
+- **Maulana Malik Ibrahim**: 10231051
+- **Pangeran Borneo Silaen**: 10231073
+- **Varrel Kaleb Ropard Pasaribu**: 10231089
 
 ## Progress Summary
 Pada Pekan 10, fokus utama adalah merancang struktur database dan membangun kerangka dasar (skeleton) untuk backend dan frontend. Kami telah berhasil menyelesaikan desain Entity Relationship Diagram (ERD) dan membuat tabel relasional awal. Selain itu, beberapa halaman dasar di Filament telah dibuat beserta routing otomatisnya, dan kerangka dasar untuk endpoint backend juga telah disiapkan.
 
 ## Accomplished Tasks
-- **Membuat ERD dan Tabel Relasional Awal**
+- **Membuat ERD** [Link ERD](https://github.com/PangeranSilaen/PermataKiddo/blob/cafa2507bc142531a041e6a96d2c9cce9c1039c6/Laporan/Gambar/Tabel%20Relasional.jpg)
   
-  [Link Tabel Relasional](https://github.com/PangeranSilaen/PermataKiddo/blob/cafa2507bc142531a041e6a96d2c9cce9c1039c6/Laporan/Gambar/Tabel%20Relasional.jpg)
-  
-  [Link ERD]()
 
+  
   Berikut adalah penjelasan detail untuk ERD (Entity-Relationship Diagram) yang telah dibuat:
 
   ### Penjelasan ERD
@@ -352,7 +355,7 @@ Pada Pekan 10, fokus utama adalah merancang struktur database dan membangun kera
 - **Avhilla Catton Andalucia**: Merancang ERD
 - **Maulana Malik Ibrahim**: Membuat ERD
 - **Pangeran Borneo Silaen**: Setup Proyek Awal, Konfigurasi Filament Panel, Membuat Resource Filament A
-- **Varrel Kaleb Ropard Pasaribu**: Analisis Kebutuhan ERD, Dokumentasi]
+- **Varrel Kaleb Ropard Pasaribu**: Analisis Kebutuhan ERD, Dokumentasi
 
 ## Screenshots / Demo
 [Link Gambar 1](https://github.com/PangeranSilaen/PermataKiddo/blob/main/Laporan/Gambar/admin.png)
