@@ -481,11 +481,10 @@ Pada Pekan 11, fokus utama adalah mengimplementasikan sistem autentikasi (Login/
 - **Varrel Kaleb Ropard Pasaribu**: Implementasi sistem login, pembuatan Controller, dokumentasi
 
 ## Screenshots / Demo
-- [Link Screenshot Login Page](#)
-- [Link Screenshot Register Page](#)
-- [Link Screenshot Dashboard Orang Tua](#)
-- [Link Screenshot Dashboard Guru](#)
-- [Link Screenshot Student Management](#)
+- ![alt text](Gambar/Login.png)
+- ![alt text](Gambar/Register.png)
+- ![alt text](Gambar/ManajemenMurid.png)
+- ![alt text](Gambar/FormPendaftaranMurid.png)
+- ![alt text](Gambar/OrangtuaBerhasilLogin.png)
+- ![alt text](Gambar/GuruBerhasilLogin.png)
 
-## Integration Test
-[Link Bukti Pengujian Integrasi](#)
