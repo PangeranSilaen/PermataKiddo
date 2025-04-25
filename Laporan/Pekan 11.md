@@ -488,3 +488,6 @@ Pada Pekan 11, fokus utama adalah mengimplementasikan sistem autentikasi (Login/
 - [Halaman Dashboard Orang tua](https://github.com/PangeranSilaen/PermataKiddo/blob/b756d22691f2270ae73d409dc2a73c483b9cb649/Laporan/Gambar/Dashboard%20Orang%20tua.png)
 - [Halaman Dashboard Guru](https://github.com/PangeranSilaen/PermataKiddo/blob/b756d22691f2270ae73d409dc2a73c483b9cb649/Laporan/Gambar/Dashboard%20Guru.png)
 
+## Integration Test
+
+Seperti yang terlihat pada tampilan, seluruh data dari back end berhasil terintegrasi dengan baik ke sisi front end tanpa menimbulkan error sedikit pun selama proses integrasi berlangsung. Hal ini menunjukkan bahwa komunikasi antara kedua sisi sistem berjalan lancar dan stabil, serta menandakan bahwa implementasi fungsionalitas dasar telah berhasil dijalankan dengan tepat.
