@@ -885,5 +885,5 @@ Pada Pekan 12, fokus utama tim adalah mengembangkan fitur Core #2 (Manajemen Gur
 - **Varrel Kaleb Ropard Pasaribu**: Implementasi UI Enhancement, styling dashboard, pembuatan widgets dan dokumentasi laporan.
 
 ## Screenshots / Demo
-- [Halaman Manajemen Guru](https://github.com/PangeranSilaen/PermataKiddo/raw/main/Laporan/Gambar/admin.png)
-- [Halaman Jadwal & Kegiatan](https://github.com/PangeranSilaen/PermataKiddo/raw/main/Laporan/Gambar/admin1.png)
+- [Halaman Manajemen Guru](https://github.com/PangeranSilaen/PermataKiddo/blob/e525382406c398544f06dc03ffd74d17309c23ff/Laporan/Gambar/schedule.png)
+- [Halaman Jadwal & Kegiatan](https://github.com/PangeranSilaen/PermataKiddo/blob/feea65a4550df0def7718d52b407a450d293af28/Laporan/Gambar/teacher.png)
