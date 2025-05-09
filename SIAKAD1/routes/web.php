@@ -22,8 +22,8 @@ Route::middleware('auth')->group(function () {
         return view('parent.dashboard');
     })->middleware(RoleMiddleware::class . ':parent')->name('parent.dashboard');
     
-    // Teacher Dashboard - only accessible by teachers
+    // Redirect teachers to admin panel
     Route::get('/teacher-dashboard', function () {
-        return view('teacher.dashboard');
+        return redirect('/admin');
     })->middleware(RoleMiddleware::class . ':teacher')->name('teacher.dashboard');
 });

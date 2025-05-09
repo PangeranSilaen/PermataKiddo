@@ -26,19 +26,11 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
             
-            // Check role based on the 'role' field rather than hasRole method
-            if ($user->role === 'admin' || $user->role === 'super_admin') {
-                return redirect('/admin');
-            } elseif ($user->role === 'teacher') {
-                return redirect('/teacher-dashboard');
-            } elseif ($user->role === 'parent') {
+            // Redirect parent users to parent-dashboard, all other roles to Filament admin panel
+            if (strtolower($user->role) === 'parent') {
                 return redirect('/parent-dashboard');
-            } else {
-                // Fallback - redirect to login with a message
-                Auth::logout();
-                return redirect()->route('login')
-                    ->withErrors(['email' => 'Your account does not have a valid role.']);
             }
+            return redirect('/admin');
         }
 
         throw ValidationException::withMessages([

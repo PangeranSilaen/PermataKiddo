@@ -18,11 +18,30 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use App\Filament\Resources\UserResource;
+use Illuminate\Support\Facades\Gate;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        // Register explicit gates untuk resource sensitif
+        Gate::define('view_any_user', function ($user) {
+            return $user->hasRole(['admin', 'super_admin']);
+        });
+        Gate::define('view_user', function ($user) {
+            return $user->hasRole(['admin', 'super_admin']);
+        });
+        Gate::define('create_user', function ($user) {
+            return $user->hasRole(['admin', 'super_admin']);
+        });
+        Gate::define('update_user', function ($user) {
+            return $user->hasRole(['admin', 'super_admin']);
+        });
+        Gate::define('delete_user', function ($user) {
+            return $user->hasRole(['admin', 'super_admin']);
+        });
+
         return $panel
             ->default()
             ->brandName('PermataKiddo')
@@ -31,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Pink,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -41,7 +60,11 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                \App\Filament\Widgets\StatsOverview::class,
+                // Moving payment stats and user role chart to the bottom
                 // Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\UserRoleChart::class,
+                \App\Filament\Widgets\PaymentOverviewChart::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,11 +77,11 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->plugins([
-                FilamentShieldPlugin::make(),
-            ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make(),
             ]);
     }
 }

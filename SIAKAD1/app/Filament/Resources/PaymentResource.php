@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PaymentResource\Pages;
-use App\Filament\Resources\PaymentResource\RelationManagers;
 use App\Models\Payment;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PaymentResource extends Resource
 {
@@ -34,24 +31,33 @@ class PaymentResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
-                        Forms\Components\TextInput::make('receipt_number')
-                            ->unique(ignoreRecord: true)
-                            ->required(),
                         Forms\Components\Select::make('payment_type')
                             ->options([
-                                'tuition' => 'Tuition Fee',
-                                'uniform' => 'Uniform',
-                                'books' => 'Books',
-                                'facility' => 'Facility Fee',
-                                'transport' => 'Transportation',
-                                'exam' => 'Exam Fee',
-                                'other' => 'Other',
+                                'spp' => 'SPP',
+                                'other' => 'Lainnya',
                             ])
-                            ->required(),
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                // Preview receipt number format
+                                $prefix = $state === 'spp' ? 'SPP-' : 'LYN-';
+                                $set('receipt_preview', $prefix . 'X0000 (akan digenerate otomatis)');
+                            }),
+                        Forms\Components\TextInput::make('receipt_preview')
+                            ->label('Format Kode Pembayaran')
+                            ->helperText('Kode pembayaran akan digenerate otomatis saat disimpan')
+                            ->disabled()
+                            ->dehydrated(false),
                         Forms\Components\TextInput::make('amount')
                             ->numeric()
                             ->prefix('Rp')
                             ->required(),
+                        Forms\Components\FileUpload::make('payment_proof')
+                            ->label('Bukti Pembayaran')
+                            ->image()
+                            ->directory('payment-proofs')
+                            ->visibility('public')
+                            ->columnSpanFull(),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Payment Details')
@@ -107,7 +113,10 @@ class PaymentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('receipt_number')
-                    ->searchable(),
+                    ->label('Kode Pembayaran')
+                    ->searchable()
+                    ->copyable()
+                    ->color('primary'),
                 Tables\Columns\TextColumn::make('student.name')
                     ->sortable()
                     ->searchable(),
@@ -120,6 +129,9 @@ class PaymentResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method'),
+                Tables\Columns\ImageColumn::make('payment_proof')
+                    ->label('Bukti Pembayaran')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('academic_year')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
@@ -143,13 +155,8 @@ class PaymentResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('payment_type')
                     ->options([
-                        'tuition' => 'Tuition Fee',
-                        'uniform' => 'Uniform',
-                        'books' => 'Books',
-                        'facility' => 'Facility Fee',
-                        'transport' => 'Transportation',
-                        'exam' => 'Exam Fee',
-                        'other' => 'Other',
+                        'spp' => 'SPP',
+                        'other' => 'Lainnya',
                     ]),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
@@ -175,6 +182,13 @@ class PaymentResource extends Resource
     {
         return [
             //
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            PaymentResource\Widgets\PaymentChart::class,
         ];
     }
 

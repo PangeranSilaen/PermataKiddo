@@ -10,8 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
@@ -22,6 +21,9 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
     
     protected static ?string $navigationGroup = 'User Management';
+
+    // Pastikan Shield policy mengontrol semua akses ke resource ini
+    protected static bool $shouldRegisterNavigation = true;
 
     public static function form(Form $form): Form
     {
@@ -48,20 +50,19 @@ class UserResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('password')
                             ->password()
-                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->revealable()
+                            ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
-                        Forms\Components\Select::make('role')
-                            ->options([
-                                'admin' => 'Admin',
-                                'teacher' => 'Teacher',
-                                'parent' => 'Parent',
-                            ])
+                        Select::make('role')
+                            ->options(fn () => Role::pluck('name', 'name')->toArray())
                             ->required()
                             ->reactive()
                             ->afterStateUpdated(function ($state, $set) {
                                 if ($state === 'teacher') {
-                                    $set('teacher.subject', null);
+                                    $set('teacher.nip', 'T-' . rand(10000, 99999));
+                                    $set('teacher.subject', 'General');
+                                    $set('teacher.address', 'Alamat belum diisi');
                                 }
                             }),
                     ])->columns(2),
@@ -69,13 +70,19 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('teacher.nip')
                             ->label('NIP (Employee ID)')
-                            ->maxLength(20),
+                            ->maxLength(20)
+                            ->default('T-' . rand(10000, 99999))
+                            ->required(false),
                         Forms\Components\TextInput::make('teacher.subject')
                             ->label('Subject')
-                            ->maxLength(50),
+                            ->maxLength(50)
+                            ->default('General')
+                            ->required(false),
                         Forms\Components\Textarea::make('teacher.address')
                             ->label('Address')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->default('Alamat belum diisi')
+                            ->required(false),
                     ])
                     ->columns(2)
                     ->visible(fn (callable $get) => $get('role') === 'teacher'),

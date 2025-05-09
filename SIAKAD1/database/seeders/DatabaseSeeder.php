@@ -12,11 +12,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Jalankan AdminSeeder untuk membuat akun admin dan roles
+        // Jalankan semua seeder secara berurutan
         $this->call([
             AdminSeeder::class,
+            UserSeeder::class,
+            TeacherSeeder::class,
+            StudentSeeder::class,
+            ScheduleSeeder::class,
+            PaymentSeeder::class,
+            AchievementSeeder::class,
         ]);
-
-        // Tambahkan seeder lain di masa depan jika diperlukan
     }
 }
