@@ -22,7 +22,7 @@ class RegistrationResource extends Resource
     
     protected static ?string $navigationLabel = 'Pendaftaran Online';
     
-    protected static ?string $navigationGroup = 'Manajemen Akademik';
+    protected static ?string $navigationGroup = 'Academic Management';
     
     protected static ?int $navigationSort = 1;
 
@@ -141,7 +141,7 @@ class RegistrationResource extends Resource
                     
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Status')
-                    ->options([
+                    ->enum([
                         'pending' => 'Menunggu Persetujuan',
                         'approved' => 'Diterima',
                         'rejected' => 'Ditolak',

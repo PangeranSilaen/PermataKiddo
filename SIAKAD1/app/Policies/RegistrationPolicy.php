@@ -2,19 +2,20 @@
 
 namespace App\Policies;
 
-use App\Models\Registration;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\Registration;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RegistrationPolicy
 {
+    use HandlesAuthorization;
+
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        // Hanya admin dan super_admin yang dapat melihat daftar pendaftaran
-        return $user->hasRole(['admin', 'super_admin']);
+        return $user->can('view_any_registration');
     }
 
     /**
@@ -22,9 +23,7 @@ class RegistrationPolicy
      */
     public function view(User $user, Registration $registration): bool
     {
-        // Admin, super_admin, dan orang tua yang membuat pendaftaran dapat melihat detail
-        return $user->hasRole(['admin', 'super_admin']) || 
-               ($user->hasRole('parent') && $registration->user_id === $user->id);
+        return $user->can('view_registration');
     }
 
     /**
@@ -32,8 +31,7 @@ class RegistrationPolicy
      */
     public function create(User $user): bool
     {
-        // Semua user (terutama orang tua) dapat membuat pendaftaran
-        return true;
+        return $user->can('create_registration');
     }
 
     /**
@@ -41,8 +39,7 @@ class RegistrationPolicy
      */
     public function update(User $user, Registration $registration): bool
     {
-        // Hanya admin dan super_admin yang dapat mengubah status pendaftaran
-        return $user->hasRole(['admin', 'super_admin']);
+        return $user->can('update_registration');
     }
 
     /**
@@ -50,25 +47,62 @@ class RegistrationPolicy
      */
     public function delete(User $user, Registration $registration): bool
     {
-        // Hanya admin dan super_admin yang dapat menghapus pendaftaran
-        return $user->hasRole(['admin', 'super_admin']);
+        return $user->can('delete_registration');
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can bulk delete.
      */
-    public function restore(User $user, Registration $registration): bool
+    public function deleteAny(User $user): bool
     {
-        // Hanya admin dan super_admin yang dapat memulihkan pendaftaran yang dihapus
-        return $user->hasRole(['admin', 'super_admin']);
+        return $user->can('delete_any_registration');
     }
 
     /**
-     * Determine whether the user can permanently delete the model.
+     * Determine whether the user can permanently delete.
      */
     public function forceDelete(User $user, Registration $registration): bool
     {
-        // Hanya super_admin yang dapat menghapus permanen pendaftaran
-        return $user->hasRole('super_admin');
+        return $user->can('force_delete_registration');
+    }
+
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
+    {
+        return $user->can('force_delete_any_registration');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Registration $registration): bool
+    {
+        return $user->can('restore_registration');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_registration');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Registration $registration): bool
+    {
+        return $user->can('replicate_registration');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_registration');
     }
 }

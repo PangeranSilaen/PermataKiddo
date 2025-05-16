@@ -53,4 +53,12 @@ class Student extends Model
     {
         return $this->hasMany(Payment::class);
     }
+
+    /**
+     * Get the class room associated with the student.
+     */
+    public function classRoom(): BelongsTo
+    {
+        return $this->belongsTo(ClassRoom::class);
+    }
 }

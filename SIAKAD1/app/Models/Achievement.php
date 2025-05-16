@@ -14,17 +14,16 @@ class Achievement extends Model
         'student_id',
         'teacher_id',
         'subject',
-        'achievement_type',
-        'score',
-        'description',
         'achievement_date',
         'semester',
         'academic_year',
+        'achievements',
     ];
 
     protected $casts = [
         'score' => 'decimal:2',
         'achievement_date' => 'date',
+        'achievements' => 'array',
     ];
 
     /**
@@ -41,5 +40,21 @@ class Achievement extends Model
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    /**
+     * Get the count of achievements.
+     */
+    public function getAchievementsCountAttribute()
+    {
+        $ach = $this->achievements;
+        if (is_array($ach)) {
+            return count($ach);
+        }
+        if (is_string($ach) && !empty($ach)) {
+            $arr = json_decode($ach, true);
+            return is_array($arr) ? count($arr) : 0;
+        }
+        return 0;
     }
 }

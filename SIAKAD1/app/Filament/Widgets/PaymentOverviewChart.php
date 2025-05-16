@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\Payment;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentOverviewChart extends ChartWidget
 {
@@ -28,6 +29,11 @@ class PaymentOverviewChart extends ChartWidget
             '6_bulan_terakhir' => '6 Bulan Terakhir',
             '3_bulan_terakhir' => '3 Bulan Terakhir',
         ];
+    }
+
+    public static function canView(): bool
+    {
+        return Auth::user() && Auth::user()->hasRole(['admin', 'super_admin']);
     }
 
     protected function getData(): array

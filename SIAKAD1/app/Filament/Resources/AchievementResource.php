@@ -44,23 +44,24 @@ class AchievementResource extends Resource
                         Forms\Components\TextInput::make('subject')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Select::make('achievement_type')
+                        Forms\Components\Select::make('achievements')
+                            ->label('Capaian')
+                            ->multiple()
                             ->options([
-                                'exam' => 'Exam',
-                                'quiz' => 'Quiz',
-                                'project' => 'Project',
-                                'homework' => 'Homework',
-                                'competition' => 'Competition',
-                                'other' => 'Other',
+                                'capaian_1' => 'Capaian 1',
+                                'capaian_2' => 'Capaian 2',
+                                'capaian_3' => 'Capaian 3',
+                                'capaian_4' => 'Capaian 4',
+                                'capaian_5' => 'Capaian 5',
+                                'capaian_6' => 'Capaian 6',
+                                'capaian_7' => 'Capaian 7',
+                                'capaian_8' => 'Capaian 8',
                             ])
                             ->required(),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Score Information')
                     ->schema([
-                        Forms\Components\TextInput::make('score')
-                            ->numeric()
-                            ->required(),
                         Forms\Components\DatePicker::make('achievement_date')
                             ->required(),
                         Forms\Components\Select::make('semester')
@@ -73,10 +74,6 @@ class AchievementResource extends Resource
                             ->required()
                             ->placeholder('2024/2025'),
                     ])->columns(2),
-
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull()
-                    ->rows(3),
             ]);
     }
 
@@ -85,50 +82,16 @@ class AchievementResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('student.name')
-                    ->sortable()
+                    ->label('Nama Siswa')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('teacher.name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('subject')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('achievement_type')
-                    ->badge(),
-                Tables\Columns\TextColumn::make('score')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('achievement_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('semester'),
-                Tables\Columns\TextColumn::make('academic_year')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('achievements_count')
+                    ->label('Jumlah Capaian')
+                    ->formatStateUsing(fn($state) => $state . ' Capaian'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('achievement_type')
-                    ->options([
-                        'exam' => 'Exam',
-                        'quiz' => 'Quiz',
-                        'project' => 'Project',
-                        'homework' => 'Homework',
-                        'competition' => 'Competition',
-                        'other' => 'Other',
-                    ]),
-                Tables\Filters\SelectFilter::make('semester')
-                    ->options([
-                        '1' => 'Semester 1',
-                        '2' => 'Semester 2',
-                    ]),
+                    ->sortable(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -155,4 +118,17 @@ class AchievementResource extends Resource
             'view' => Pages\ViewAchievement::route('/{record}'),
         ];
     }
+
+    // public function getAchievementsCountAttribute()
+    // {
+    //     $ach = $this->achievements;
+    //     if (is_array($ach)) {
+    //         return count($ach);
+    //     }
+    //     if (is_string($ach) && !empty($ach)) {
+    //         $arr = json_decode($ach, true);
+    //         return is_array($arr) ? count($arr) : 0;
+    //     }
+    //     return 0;
+    // }
 }

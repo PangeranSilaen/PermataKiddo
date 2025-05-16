@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Models\User;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserRoleChart extends ChartWidget
 {
@@ -19,6 +20,11 @@ class UserRoleChart extends ChartWidget
     // Auto-refresh setiap 30 menit
     protected static ?string $pollingInterval = '30m';
     
+    public static function canView(): bool
+    {
+        return Auth::user() && Auth::user()->hasRole(['admin', 'super_admin']);
+    }
+
     protected function getData(): array
     {
         // Ambil data distribusi role dari tabel users

@@ -122,6 +122,14 @@ class PaymentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('payment_type')
                     ->badge(),
+                Tables\Columns\SelectColumn::make('status')
+                    ->label('Status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'paid' => 'Paid',
+                        'failed' => 'Failed',
+                    ])
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->money('IDR')
                     ->sortable(),
@@ -129,20 +137,11 @@ class PaymentResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_method'),
+                Tables\Columns\TextColumn::make('academic_year')
+                    ->searchable(),
                 Tables\Columns\ImageColumn::make('payment_proof')
                     ->label('Bukti Pembayaran')
                     ->circular(),
-                Tables\Columns\TextColumn::make('academic_year')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'paid' => 'success',
-                        'pending' => 'warning',
-                        'cancelled' => 'danger',
-                        'refunded' => 'info',
-                        default => 'gray',
-                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -167,7 +166,6 @@ class PaymentResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

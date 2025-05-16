@@ -78,6 +78,11 @@ class StudentResource extends Resource
                             ])
                             ->default('active')
                             ->required(),
+                        Forms\Components\Select::make('class_room_id')
+                            ->label('Classroom')
+                            ->relationship('classRoom', 'name')
+                            ->searchable()
+                            ->preload(),
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->searchable()
@@ -155,7 +160,6 @@ class StudentResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
