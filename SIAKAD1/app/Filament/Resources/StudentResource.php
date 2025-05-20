@@ -18,7 +18,9 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     
-    protected static ?string $navigationGroup = 'Academic Management';
+    protected static ?string $navigationGroup = 'Manajemen Akademik';
+
+    protected static ?string $navigationLabel = 'Murid';
 
     protected static ?int $navigationSort = 1;
     
@@ -28,78 +30,96 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Student Information')
+                Forms\Components\Section::make('Informasi Murid')
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label('Nama Lengkap')
+                            ->placeholder('Masukkan nama lengkap murid')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('registration_number')
+                            ->label('Nomor Induk')
+                            ->placeholder('Masukkan nomor induk murid')
                             ->required()
                             ->maxLength(50)
                             ->unique(ignoreRecord: true),
                         Forms\Components\DatePicker::make('birth_date')
+                            ->label('Tanggal Lahir')
                             ->required(),
                         Forms\Components\Select::make('gender')
+                            ->label('Jenis Kelamin')
                             ->options([
-                                'male' => 'Male',
-                                'female' => 'Female',
+                                'male' => 'Laki-laki',
+                                'female' => 'Perempuan',
                             ])
+                            ->placeholder('Pilih jenis kelamin')
                             ->required(),
                         Forms\Components\FileUpload::make('photo')
+                            ->label('Foto')
                             ->image()
                             ->directory('student-photos')
-                            // ->visibility('public')
                             ->disk('public'),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Parent Information')
+                Forms\Components\Section::make('Detail Orang Tua')
                     ->schema([
                         Forms\Components\TextInput::make('parent_name')
+                            ->label('Nama Orang Tua/Wali')
+                            ->placeholder('Masukkan nama orang tua/wali')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('parent_phone')
+                            ->label('Nomor Telepon Orang Tua/Wali')
+                            ->placeholder('Masukkan nomor telepon orang tua/wali')
                             ->tel()
                             ->required(),
                         Forms\Components\Textarea::make('address')
+                            ->label('Alamat')
+                            ->placeholder('Masukkan alamat murid')
                             ->rows(3)
                             ->columnSpanFull(),
                     ]),
 
-                Forms\Components\Section::make('Academic Information')
+                Forms\Components\Section::make('Informasi Akademik')
                     ->schema([
                         Forms\Components\DatePicker::make('join_date')
+                            ->label('Tanggal Masuk')
                             ->required(),
                         Forms\Components\Select::make('status')
+                            ->label('Status')
                             ->options([
-                                'active' => 'Active',
-                                'inactive' => 'Inactive',
-                                'graduated' => 'Graduated',
-                                'transferred' => 'Transferred',
+                                'active' => 'Aktif',
+                                'inactive' => 'Tidak Aktif',
+                                'graduated' => 'Lulus',
+                                'transferred' => 'Pindah',
                             ])
                             ->default('active')
                             ->required(),
                         Forms\Components\Select::make('class_room_id')
-                            ->label('Classroom')
+                            ->label('Kelas')
                             ->relationship('classRoom', 'name')
                             ->searchable()
                             ->preload(),
                         Forms\Components\Select::make('user_id')
+                            ->label('Akun Orang Tua')
                             ->relationship('user', 'name')
                             ->searchable()
                             ->preload()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
+                                    ->label('Nama Lengkap')
                                     ->required(),
                                 Forms\Components\TextInput::make('email')
+                                    ->label('Email')
                                     ->email()
                                     ->required()
                                     ->unique('users', 'email'),
                                 Forms\Components\TextInput::make('password')
+                                    ->label('Kata Sandi')
                                     ->password()
                                     ->required()
                                     ->hiddenOn('edit'),
-                            ])
-                            ->label('Parent Account'),
+                            ]),
                     ])->columns(3),
             ]);
     }
@@ -109,13 +129,17 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('photo')
+                    ->label('Foto')
                     ->circular()
-                    ->disk('public'), // pastikan ini ada
+                    ->disk('public'),
                 Tables\Columns\TextColumn::make('registration_number')
+                    ->label('Nomor Induk')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Lengkap')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('gender')
+                    ->label('Jenis Kelamin')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => ucfirst($state))
                     ->color(fn (string $state): string => match ($state) {
@@ -124,14 +148,18 @@ class StudentResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('birth_date')
+                    ->label('Tanggal Lahir')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('parent_name')
+                    ->label('Nama Orang Tua/Wali')
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('parent_phone')
+                    ->label('Nomor Telepon Orang Tua/Wali')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'active' => 'success',
@@ -141,6 +169,7 @@ class StudentResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('join_date')
+                    ->label('Tanggal Masuk')
                     ->date()
                     ->sortable()
                     ->toggleable(),
@@ -148,15 +177,15 @@ class StudentResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'active' => 'Active',
-                        'inactive' => 'Inactive',
-                        'graduated' => 'Graduated',
-                        'transferred' => 'Transferred',
+                        'active' => 'Aktif',
+                        'inactive' => 'Tidak Aktif',
+                        'graduated' => 'Lulus',
+                        'transferred' => 'Pindah',
                     ]),
                 Tables\Filters\SelectFilter::make('gender')
                     ->options([
-                        'male' => 'Male',
-                        'female' => 'Female',
+                        'male' => 'Laki-laki',
+                        'female' => 'Perempuan',
                     ]),
             ])
             ->actions([

@@ -19,7 +19,7 @@ class ClassRoomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Kelas';
-    protected static ?string $navigationGroup = 'Academic Management';
+    protected static ?string $navigationGroup = 'Manajemen Akademik';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -28,20 +28,24 @@ class ClassRoomResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label('Nama Kelas')
+                    ->placeholder('Masukkan nama kelas')
                     ->required()
                     ->maxLength(100),
                 Forms\Components\Select::make('teacher_id')
                     ->label('Wali Kelas')
+                    ->placeholder('Pilih wali kelas')
                     ->relationship('waliKelas', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\TextInput::make('academic_year')
                     ->label('Tahun Ajaran')
+                    ->placeholder('Contoh: 2024/2025')
                     ->required()
                     ->maxLength(20),
                 Forms\Components\Textarea::make('description')
                     ->label('Deskripsi')
+                    ->placeholder('Deskripsi kelas (opsional)')
                     ->maxLength(500),
             ]);
     }

@@ -19,7 +19,9 @@ class AchievementResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-trophy';
 
-    protected static ?string $navigationGroup = 'Academic Management';
+    protected static ?string $navigationGroup = 'Manajemen Akademik';
+
+    protected static ?string $navigationLabel = 'Laporan Capaian';
     
     protected static ?int $navigationSort = 3;
 
@@ -29,23 +31,25 @@ class AchievementResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Achievement Details')
+                Forms\Components\Section::make('Detail Laporan Capaian')
                     ->schema([
                         Forms\Components\Select::make('student_id')
+                            ->label('Murid')
+                            ->placeholder('Pilih murid')
                             ->relationship('student', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('teacher_id')
+                            ->label('Guru')
+                            ->placeholder('Pilih guru')
                             ->relationship('teacher', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
-                        Forms\Components\TextInput::make('subject')
-                            ->required()
-                            ->maxLength(255),
                         Forms\Components\Select::make('achievements')
                             ->label('Capaian')
+                            ->placeholder('Pilih capaian')
                             ->multiple()
                             ->options([
                                 'capaian_1' => 'Capaian 1',
@@ -60,19 +64,23 @@ class AchievementResource extends Resource
                             ->required(),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Score Information')
+                Forms\Components\Section::make('Informasi Nilai')
                     ->schema([
                         Forms\Components\DatePicker::make('achievement_date')
+                            ->label('Tanggal Capaian')
                             ->required(),
                         Forms\Components\Select::make('semester')
+                            ->label('Semester')
                             ->options([
                                 '1' => 'Semester 1',
                                 '2' => 'Semester 2',
                             ])
+                            ->placeholder('Pilih semester')
                             ->required(),
                         Forms\Components\TextInput::make('academic_year')
-                            ->required()
-                            ->placeholder('2024/2025'),
+                            ->label('Tahun Ajaran')
+                            ->placeholder('Contoh: 2024/2025')
+                            ->required(),
                     ])->columns(2),
             ]);
     }

@@ -16,7 +16,9 @@ class PaymentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
-    protected static ?string $navigationGroup = 'Finance Management';
+    protected static ?string $navigationGroup = 'Manajemen Keuangan';
+
+    protected static ?string $navigationLabel = 'Pembayaran SPP';
 
     protected static ?string $recordTitleAttribute = 'receipt_number';
 
@@ -24,22 +26,25 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Payment Information')
+                Forms\Components\Section::make('Informasi Pembayaran')
                     ->schema([
                         Forms\Components\Select::make('student_id')
+                            ->label('Murid')
+                            ->placeholder('Pilih murid')
                             ->relationship('student', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\Select::make('payment_type')
+                            ->label('Jenis Pembayaran')
                             ->options([
                                 'spp' => 'SPP',
                                 'other' => 'Lainnya',
                             ])
+                            ->placeholder('Pilih jenis pembayaran')
                             ->required()
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $set) {
-                                // Preview receipt number format
                                 $prefix = $state === 'spp' ? 'SPP-' : 'LYN-';
                                 $set('receipt_preview', $prefix . 'X0000 (akan digenerate otomatis)');
                             }),
@@ -49,6 +54,8 @@ class PaymentResource extends Resource
                             ->disabled()
                             ->dehydrated(false),
                         Forms\Components\TextInput::make('amount')
+                            ->label('Nominal')
+                            ->placeholder('Masukkan nominal pembayaran')
                             ->numeric()
                             ->prefix('Rp')
                             ->required(),
@@ -60,49 +67,58 @@ class PaymentResource extends Resource
                             ->columnSpanFull(),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Payment Details')
+                Forms\Components\Section::make('Detail Pembayaran')
                     ->schema([
                         Forms\Components\DatePicker::make('payment_date')
+                            ->label('Tanggal Pembayaran')
                             ->required()
                             ->default(now()),
                         Forms\Components\Select::make('payment_method')
+                            ->label('Metode Pembayaran')
                             ->options([
-                                'cash' => 'Cash',
-                                'credit_card' => 'Credit Card',
-                                'bank_transfer' => 'Bank Transfer',
+                                'cash' => 'Tunai',
+                                'credit_card' => 'Kartu Kredit',
+                                'bank_transfer' => 'Transfer Bank',
                                 'e_wallet' => 'E-Wallet',
-                                'other' => 'Other',
-                            ]),
+                                'other' => 'Lainnya',
+                            ])
+                            ->placeholder('Pilih metode pembayaran'),
                         Forms\Components\Select::make('month')
+                            ->label('Bulan')
                             ->options([
-                                'january' => 'January',
-                                'february' => 'February',
-                                'march' => 'March',
+                                'january' => 'Januari',
+                                'february' => 'Februari',
+                                'march' => 'Maret',
                                 'april' => 'April',
-                                'may' => 'May',
-                                'june' => 'June',
-                                'july' => 'July',
-                                'august' => 'August',
+                                'may' => 'Mei',
+                                'june' => 'Juni',
+                                'july' => 'Juli',
+                                'august' => 'Agustus',
                                 'september' => 'September',
-                                'october' => 'October',
+                                'october' => 'Oktober',
                                 'november' => 'November',
-                                'december' => 'December',
-                            ]),
+                                'december' => 'Desember',
+                            ])
+                            ->placeholder('Pilih bulan'),
                         Forms\Components\TextInput::make('academic_year')
-                            ->required()
-                            ->placeholder('2024/2025'),
+                            ->label('Tahun Ajaran')
+                            ->placeholder('Contoh: 2024/2025')
+                            ->required(),
                         Forms\Components\Select::make('status')
+                            ->label('Status')
                             ->options([
-                                'paid' => 'Paid',
-                                'pending' => 'Pending',
-                                'cancelled' => 'Cancelled',
-                                'refunded' => 'Refunded',
+                                'paid' => 'Lunas',
+                                'pending' => 'Menunggu',
+                                'cancelled' => 'Dibatalkan',
+                                'refunded' => 'Dikembalikan',
                             ])
                             ->default('paid')
                             ->required(),
                     ])->columns(2),
 
                 Forms\Components\Textarea::make('notes')
+                    ->label('Catatan')
+                    ->placeholder('Catatan tambahan (opsional)')
                     ->columnSpanFull()
                     ->rows(3),
             ]);
@@ -118,51 +134,61 @@ class PaymentResource extends Resource
                     ->copyable()
                     ->color('primary'),
                 Tables\Columns\TextColumn::make('student.name')
+                    ->label('Nama Murid')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('payment_type')
+                    ->label('Jenis Pembayaran')
                     ->badge(),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Status')
                     ->options([
-                        'pending' => 'Pending',
-                        'paid' => 'Paid',
-                        'failed' => 'Failed',
+                        'pending' => 'Menunggu',
+                        'paid' => 'Lunas',
+                        'failed' => 'Gagal',
                     ])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
+                    ->label('Nominal')
                     ->money('IDR')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('payment_date')
+                    ->label('Tanggal Pembayaran')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('payment_method'),
+                Tables\Columns\TextColumn::make('payment_method')
+                    ->label('Metode Pembayaran'),
                 Tables\Columns\TextColumn::make('academic_year')
+                    ->label('Tahun Ajaran')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('payment_proof')
                     ->label('Bukti Pembayaran')
                     ->circular(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('payment_type')
+                    ->label('Jenis Pembayaran')
                     ->options([
                         'spp' => 'SPP',
                         'other' => 'Lainnya',
                     ]),
                 Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
                     ->options([
-                        'paid' => 'Paid',
-                        'pending' => 'Pending',
-                        'cancelled' => 'Cancelled',
-                        'refunded' => 'Refunded',
+                        'paid' => 'Lunas',
+                        'pending' => 'Menunggu',
+                        'cancelled' => 'Dibatalkan',
+                        'refunded' => 'Dikembalikan',
                     ]),
             ])
             ->actions([

@@ -20,7 +20,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     
-    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $navigationGroup = 'Manajemen Pengguna';
+    protected static ?string $navigationLabel = 'Pengguna';
 
     // Pastikan Shield policy mengontrol semua akses ke resource ini
     protected static bool $shouldRegisterNavigation = true;
@@ -29,33 +30,45 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('User Information')
+                Forms\Components\Section::make('Informasi Pengguna')
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label('Nama Lengkap')
+                            ->placeholder('Masukkan nama lengkap')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
+                            ->label('Email')
+                            ->placeholder('Masukkan email')
                             ->email()
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('gender')
+                            ->label('Jenis Kelamin')
                             ->options([
-                                'male' => 'Male',
-                                'female' => 'Female',
+                                'male' => 'Laki-laki',
+                                'female' => 'Perempuan',
                             ])
+                            ->placeholder('Pilih jenis kelamin')
                             ->required(),
                         Forms\Components\TextInput::make('phone')
+                            ->label('Nomor Telepon')
+                            ->placeholder('Masukkan nomor telepon')
                             ->tel()
                             ->maxLength(15)
                             ->required(),
                         Forms\Components\TextInput::make('password')
+                            ->label('Kata Sandi')
+                            ->placeholder('Masukkan kata sandi')
                             ->password()
                             ->revealable()
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? Hash::make($state) : null)
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
                         Select::make('role')
+                            ->label('Peran')
                             ->options(fn () => Role::pluck('name', 'name')->toArray())
+                            ->placeholder('Pilih peran')
                             ->required()
                             ->reactive()
                             ->afterStateUpdated(function ($state, $set) {
@@ -66,20 +79,23 @@ class UserResource extends Resource
                                 }
                             }),
                     ])->columns(2),
-                Forms\Components\Section::make('Teacher Details')
+                Forms\Components\Section::make('Detail Guru')
                     ->schema([
                         Forms\Components\TextInput::make('teacher.nip')
-                            ->label('NIP (Employee ID)')
+                            ->label('NIP')
+                            ->placeholder('Masukkan NIP')
                             ->maxLength(20)
                             ->default('T-' . rand(10000, 99999))
                             ->required(false),
                         Forms\Components\TextInput::make('teacher.subject')
-                            ->label('Subject')
+                            ->label('Mata Pelajaran')
+                            ->placeholder('Masukkan mata pelajaran')
                             ->maxLength(50)
                             ->default('General')
                             ->required(false),
                         Forms\Components\Textarea::make('teacher.address')
-                            ->label('Address')
+                            ->label('Alamat')
+                            ->placeholder('Masukkan alamat')
                             ->maxLength(255)
                             ->default('Alamat belum diisi')
                             ->required(false),

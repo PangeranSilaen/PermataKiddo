@@ -10,10 +10,15 @@ class ListRegistrations extends ListRecords
 {
     protected static string $resource = RegistrationResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Daftar Pendaftaran Online';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Pendaftaran Baru'),
         ];
     }
 }

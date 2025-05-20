@@ -10,10 +10,15 @@ class ListSchedules extends ListRecords
 {
     protected static string $resource = ScheduleResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Daftar Jadwal';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Jadwal Baru'),
         ];
     }
 }

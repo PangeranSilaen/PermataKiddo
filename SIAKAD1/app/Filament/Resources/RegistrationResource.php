@@ -22,7 +22,7 @@ class RegistrationResource extends Resource
     
     protected static ?string $navigationLabel = 'Pendaftaran Online';
     
-    protected static ?string $navigationGroup = 'Academic Management';
+    protected static ?string $navigationGroup = 'Manajemen Akademik';
     
     protected static ?int $navigationSort = 1;
 
@@ -117,6 +117,10 @@ class RegistrationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('photo')
+                ->label('Foto')
+                ->circular(),
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()
@@ -135,22 +139,20 @@ class RegistrationResource extends Resource
                     ->date('d M Y')
                     ->sortable(),
                     
-                Tables\Columns\ImageColumn::make('photo')
-                    ->label('Foto')
-                    ->circular(),
-                    
-                Tables\Columns\SelectColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->enum([
+                    ->formatStateUsing(fn ($state) => match ($state) {
                         'pending' => 'Menunggu Persetujuan',
                         'approved' => 'Diterima',
                         'rejected' => 'Ditolak',
-                    ])
-                    ->colors([
-                        'warning' => 'pending',
-                        'success' => 'approved',
-                        'danger' => 'rejected',
-                    ]),
+                        default => $state,
+                    })
+                    ->color(fn ($state) => match ($state) {
+                        'pending' => 'warning',
+                        'approved' => 'success',
+                        'rejected' => 'danger',
+                        default => null,
+                    }),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

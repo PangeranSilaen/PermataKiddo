@@ -10,10 +10,15 @@ class ListAchievements extends ListRecords
 {
     protected static string $resource = AchievementResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Daftar Laporan Capaian';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Laporan Capaian Baru'),
         ];
     }
 }

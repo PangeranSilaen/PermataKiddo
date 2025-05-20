@@ -10,10 +10,15 @@ class ListStudents extends ListRecords
 {
     protected static string $resource = StudentResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Daftar Murid';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label('Murid Baru'),
         ];
     }
 }

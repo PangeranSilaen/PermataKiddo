@@ -30,11 +30,11 @@
         <div class="header">
             <div>
                 <h1>Dashboard Orang Tua</h1>
-                <p>Selamat datang, {{ Auth::user()->name }}</p>
+                <p>Selamat datang, <?php echo e(Auth::user()->name); ?></p>
             </div>
             <div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+                <form method="POST" action="<?php echo e(route('logout')); ?>">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="btn btn-outline-danger">Keluar</button>
                 </form>
             </div>
@@ -42,7 +42,7 @@
         
         <div class="row">
             <div class="col-md-12 mb-3">
-                <a href="{{ route('filament.admin.pages.registration') }}" class="btn btn-success">Daftarkan Anak</a>
+                <a href="<?php echo e(route('filament.admin.pages.registration')); ?>" class="btn btn-success">Daftarkan Anak</a>
             </div>
         </div>
 
@@ -53,45 +53,46 @@
                         <h5 class="mb-0">Data Anak</h5>
                     </div>
                     <div class="card-body">
-                        @php
+                        <?php
                             $children = Auth::user()->students ?? [];
-                        @endphp
-                        @if(count($children))
+                        ?>
+                        <?php if(count($children)): ?>
                             <ul class="list-group">
-                                @foreach($children as $child)
+                                <?php $__currentLoopData = $children; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            <strong>{{ $child->name }}</strong> <br>
-                                            NIS: {{ $child->registration_number }}<br>
-                                            Kelas: {{ $child->classRoom->name ?? '-' }}
+                                            <strong><?php echo e($child->name); ?></strong> <br>
+                                            NIS: <?php echo e($child->registration_number); ?><br>
+                                            Kelas: <?php echo e($child->classRoom->name ?? '-'); ?>
+
                                         </div>
                                         <div>
-                                            <a href="#jadwal-{{ $child->id }}" class="btn btn-info btn-sm">Lihat Jadwal</a>
-                                            <a href="#tagihan-{{ $child->id }}" class="btn btn-warning btn-sm">Lihat Tagihan</a>
+                                            <a href="#jadwal-<?php echo e($child->id); ?>" class="btn btn-info btn-sm">Lihat Jadwal</a>
+                                            <a href="#tagihan-<?php echo e($child->id); ?>" class="btn btn-warning btn-sm">Lihat Tagihan</a>
                                         </div>
                                     </li>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
-                        @else
+                        <?php else: ?>
                             <p>Belum ada data anak terdaftar.</p>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
         
-        @foreach($children as $child)
-        <div class="row" id="tagihan-{{ $child->id }}">
+        <?php $__currentLoopData = $children; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <div class="row" id="tagihan-<?php echo e($child->id); ?>">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header bg-warning">
-                        <h5 class="mb-0">Tagihan SPP - {{ $child->name }}</h5>
+                        <h5 class="mb-0">Tagihan SPP - <?php echo e($child->name); ?></h5>
                     </div>
                     <div class="card-body">
-                        @php
+                        <?php
                             $bills = $child->payments()->orderByDesc('payment_date')->get();
-                        @endphp
-                        @if(count($bills))
+                        ?>
+                        <?php if(count($bills)): ?>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -104,48 +105,48 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($bills as $bill)
+                                    <?php $__currentLoopData = $bills; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bill): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td>{{ ucfirst($bill->month) }}</td>
-                                        <td>Rp{{ number_format($bill->amount,0,',','.') }}</td>
+                                        <td><?php echo e(ucfirst($bill->month)); ?></td>
+                                        <td>Rp<?php echo e(number_format($bill->amount,0,',','.')); ?></td>
                                         <td>
-                                            @if($bill->status == 'paid')
+                                            <?php if($bill->status == 'paid'): ?>
                                                 <span class="badge bg-success">Lunas</span>
-                                            @else
+                                            <?php else: ?>
                                                 <span class="badge bg-danger">Belum Lunas</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
-                                        <td>{{ $bill->payment_date ? date('d-m-Y', strtotime($bill->payment_date)) : '-' }}</td>
+                                        <td><?php echo e($bill->payment_date ? date('d-m-Y', strtotime($bill->payment_date)) : '-'); ?></td>
                                         <td>
-                                            @if($bill->status != 'paid')
-                                                <a href="{{ route('parent.pay', $bill->id) }}" class="btn btn-sm btn-primary">Bayar</a>
-                                            @else
+                                            <?php if($bill->status != 'paid'): ?>
+                                                <a href="<?php echo e(route('parent.pay', $bill->id)); ?>" class="btn btn-sm btn-primary">Bayar</a>
+                                            <?php else: ?>
                                                 <span class="text-success">Sudah dibayar</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
-                        @else
+                        <?php else: ?>
                             <p>Tidak ada tagihan SPP.</p>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row" id="jadwal-{{ $child->id }}">
+        <div class="row" id="jadwal-<?php echo e($child->id); ?>">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">Jadwal Kelas - {{ $child->name }}</h5>
+                        <h5 class="mb-0">Jadwal Kelas - <?php echo e($child->name); ?></h5>
                     </div>
                     <div class="card-body">
-                        @php
+                        <?php
                             $schedules = $child->classRoom ? $child->classRoom->schedules()->orderBy('day_of_week')->get() : [];
-                        @endphp
-                        @if(count($schedules))
+                        ?>
+                        <?php if(count($schedules)): ?>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -158,26 +159,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($schedules as $sch)
+                                    <?php $__currentLoopData = $schedules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td>{{ __($sch->day_of_week) }}</td>
-                                        <td>{{ $sch->subject_name }}</td>
-                                        <td>{{ $sch->teacher->name ?? '-' }}</td>
-                                        <td>{{ $sch->start_time }} - {{ $sch->end_time }}</td>
-                                        <td>{{ $sch->room }}</td>
+                                        <td><?php echo e(__($sch->day_of_week)); ?></td>
+                                        <td><?php echo e($sch->subject_name); ?></td>
+                                        <td><?php echo e($sch->teacher->name ?? '-'); ?></td>
+                                        <td><?php echo e($sch->start_time); ?> - <?php echo e($sch->end_time); ?></td>
+                                        <td><?php echo e($sch->room); ?></td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </tbody>
                             </table>
                         </div>
-                        @else
+                        <?php else: ?>
                             <p>Belum ada jadwal untuk kelas ini.</p>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 </body>
-</html>
+</html><?php /**PATH D:\Data\Documents\GitHub\PermataKiddo\SIAKAD1\resources\views/parent/dashboard.blade.php ENDPATH**/ ?>

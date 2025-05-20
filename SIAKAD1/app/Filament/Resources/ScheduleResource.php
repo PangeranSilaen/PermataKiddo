@@ -19,68 +19,80 @@ class ScheduleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
-    protected static ?string $navigationGroup = 'Academic Management';
-    
+    protected static ?string $navigationGroup = 'Manajemen Akademik';
+
+    protected static ?string $navigationLabel = 'Jadwal';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Schedule Information')
+                Forms\Components\Section::make('Informasi Jadwal')
                     ->schema([
                         Forms\Components\Select::make('teacher_id')
+                            ->label('Guru')
+                            ->placeholder('Pilih guru')
                             ->relationship('teacher', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
                         Forms\Components\TextInput::make('subject_name')
+                            ->label('Nama Mata Pelajaran')
+                            ->placeholder('Masukkan nama mata pelajaran')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('class_group')
-                            ->options([
-                                'Class A' => 'Class A',
-                                'Class B' => 'Class B',
-                                'Class C' => 'Class C',
-                                'Class D' => 'Class D',
-                                'Class E' => 'Class E',
-                            ])
+                            ->label('Kelas')
+                            ->placeholder('Pilih kelas')
+                            ->options(fn () => \App\Models\ClassRoom::pluck('name', 'id')->toArray())
+                            ->searchable()
                             ->required(),
                         Forms\Components\TextInput::make('room')
+                            ->label('Ruangan')
+                            ->placeholder('Masukkan nama ruangan')
                             ->maxLength(255),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Schedule Details')
+                Forms\Components\Section::make('Detail Jadwal')
                     ->schema([
                         Forms\Components\Select::make('day_of_week')
+                            ->label('Hari')
                             ->options([
-                                'Monday' => 'Monday',
-                                'Tuesday' => 'Tuesday',
-                                'Wednesday' => 'Wednesday',
-                                'Thursday' => 'Thursday',
-                                'Friday' => 'Friday',
-                                'Saturday' => 'Saturday',
-                                'Sunday' => 'Sunday',
+                                'Monday' => 'Senin',
+                                'Tuesday' => 'Selasa',
+                                'Wednesday' => 'Rabu',
+                                'Thursday' => 'Kamis',
+                                'Friday' => 'Jumat',
+                                'Saturday' => 'Sabtu',
+                                'Sunday' => 'Minggu',
                             ])
+                            ->placeholder('Pilih hari')
                             ->required(),
                         Forms\Components\TimePicker::make('start_time')
+                            ->label('Jam Mulai')
                             ->seconds(false)
                             ->required(),
                         Forms\Components\TimePicker::make('end_time')
+                            ->label('Jam Selesai')
                             ->seconds(false)
                             ->after('start_time')
                             ->required(),
                         Forms\Components\Select::make('status')
+                            ->label('Status')
                             ->options([
-                                'active' => 'Active',
-                                'cancelled' => 'Cancelled',
-                                'postponed' => 'Postponed',
+                                'active' => 'Aktif',
+                                'cancelled' => 'Dibatalkan',
+                                'postponed' => 'Ditunda',
                             ])
                             ->default('active')
                             ->required(),
                     ])->columns(2),
 
                 Forms\Components\Textarea::make('notes')
+                    ->label('Catatan')
+                    ->placeholder('Catatan tambahan (opsional)')
                     ->columnSpanFull()
                     ->rows(3),
             ]);
@@ -91,24 +103,32 @@ class ScheduleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('subject_name')
+                    ->label('Nama Mata Pelajaran')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Guru')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('day_of_week')
+                    ->label('Hari')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start_time')
+                    ->label('Jam Mulai')
                     ->time()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_time')
+                    ->label('Jam Selesai')
                     ->time()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('room')
+                    ->label('Ruangan')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('class_group')
+                    ->label('Kelas')
                     ->searchable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'active' => 'success',
@@ -117,10 +137,12 @@ class ScheduleResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -128,23 +150,23 @@ class ScheduleResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('day_of_week')
                     ->options([
-                        'Monday' => 'Monday',
-                        'Tuesday' => 'Tuesday',
-                        'Wednesday' => 'Wednesday',
-                        'Thursday' => 'Thursday',
-                        'Friday' => 'Friday',
-                        'Saturday' => 'Saturday',
-                        'Sunday' => 'Sunday',
+                        'Monday' => 'Senin',
+                        'Tuesday' => 'Selasa',
+                        'Wednesday' => 'Rabu',
+                        'Thursday' => 'Kamis',
+                        'Friday' => 'Jumat',
+                        'Saturday' => 'Sabtu',
+                        'Sunday' => 'Minggu',
                     ]),
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'active' => 'Active',
-                        'cancelled' => 'Cancelled',
-                        'postponed' => 'Postponed',
+                        'active' => 'Aktif',
+                        'cancelled' => 'Dibatalkan',
+                        'postponed' => 'Ditunda',
                     ]),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

@@ -19,7 +19,9 @@ class TeacherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     
-    protected static ?string $navigationGroup = 'Staff Management';
+    protected static ?string $navigationGroup = 'Manajemen Tenaga Didik';
+
+    protected static ?string $navigationLabel = 'Guru';
 
     protected static ?int $navigationSort = 2;
     
@@ -29,61 +31,79 @@ class TeacherResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Teacher Information')
+                Forms\Components\Section::make('Informasi Guru')
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label('Nama Lengkap')
+                            ->placeholder('Masukkan nama lengkap guru')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('employee_id')
+                            ->label('NIP')
+                            ->placeholder('Masukkan NIP')
                             ->required()
                             ->maxLength(50)
                             ->unique(ignoreRecord: true),
                         Forms\Components\TextInput::make('specialization')
+                            ->label('Spesialisasi')
+                            ->placeholder('Masukkan spesialisasi (opsional)')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('phone_number')
+                            ->label('Nomor Telepon')
+                            ->placeholder('Masukkan nomor telepon guru')
                             ->tel()
                             ->required(),
                         Forms\Components\FileUpload::make('photo')
+                            ->label('Foto')
                             ->image()
                             ->directory('teacher-photos'),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Additional Information')
+                Forms\Components\Section::make('Informasi Tambahan')
                     ->schema([
                         Forms\Components\Textarea::make('address')
+                            ->label('Alamat')
+                            ->placeholder('Masukkan alamat guru')
                             ->rows(3),
                         Forms\Components\DatePicker::make('join_date')
+                            ->label('Tanggal Masuk')
                             ->required(),
                         Forms\Components\Select::make('status')
+                            ->label('Status')
                             ->options([
-                                'active' => 'Active',
-                                'inactive' => 'Inactive',
-                                'on_leave' => 'On Leave',
-                                'terminated' => 'Terminated',
+                                'active' => 'Aktif',
+                                'inactive' => 'Tidak Aktif',
+                                'on_leave' => 'Cuti',
+                                'terminated' => 'Berhenti',
                             ])
                             ->default('active')
                             ->required(),
                         Forms\Components\Select::make('user_id')
+                            ->label('Akun Pengguna')
                             ->relationship('user', 'name')
                             ->searchable()
                             ->preload()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
+                                    ->label('Nama Lengkap')
                                     ->required(),
                                 Forms\Components\TextInput::make('email')
+                                    ->label('Email')
                                     ->email()
                                     ->required()
                                     ->unique('users', 'email'),
                                 Forms\Components\TextInput::make('password')
+                                    ->label('Kata Sandi')
                                     ->password()
                                     ->required()
                                     ->hiddenOn('edit'),
                             ])
-                            ->label('User Account')
                             ->required(),
                     ])->columns(2),
 
                 Forms\Components\RichEditor::make('bio')
+                    ->label('Biografi')
+                    ->placeholder('Tulis biografi guru (opsional)')
                     ->columnSpanFull(),
             ]);
     }
@@ -93,19 +113,26 @@ class TeacherResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('photo')
+                    ->label('Foto')
                     ->circular(),
                 Tables\Columns\TextColumn::make('employee_id')
+                    ->label('NIP')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Lengkap')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('specialization')
+                    ->label('Spesialisasi')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone_number')
+                    ->label('Nomor Telepon')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('join_date')
+                    ->label('Tanggal Masuk')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'active' => 'success',
@@ -115,10 +142,12 @@ class TeacherResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui Pada')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -126,10 +155,10 @@ class TeacherResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
-                        'active' => 'Active',
-                        'inactive' => 'Inactive',
-                        'on_leave' => 'On Leave',
-                        'terminated' => 'Terminated',
+                        'active' => 'Aktif',
+                        'inactive' => 'Tidak Aktif',
+                        'on_leave' => 'Cuti',
+                        'terminated' => 'Berhenti',
                     ]),
             ])
             ->actions([
