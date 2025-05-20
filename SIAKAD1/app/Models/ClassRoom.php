@@ -27,4 +27,9 @@ class ClassRoom extends Model
     {
         return $this->hasMany(Student::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(\App\Models\Schedule::class, 'class_group', 'id');
+    }
 }

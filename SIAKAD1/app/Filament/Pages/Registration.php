@@ -99,4 +99,28 @@ class Registration extends Page
             ->success()
             ->send();
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user() && auth()->user()->hasRole(['admin', 'parent']);
+    }
+
+    public static function getPolicy(): ?string
+    {
+        return null;
+    }
+
+    public function render(): \Illuminate\Contracts\View\View
+    {
+        $bills = [];
+        if (auth()->user() && auth()->user()->hasRole('parent')) {
+            $children = auth()->user()->students ?? [];
+            foreach ($children as $child) {
+                $bills[$child->name] = $child->payments()->orderByDesc('payment_date')->get();
+            }
+        }
+        return view(static::$view, [
+            'bills' => $bills,
+        ]);
+    }
 }
