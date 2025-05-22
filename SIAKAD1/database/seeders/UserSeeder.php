@@ -15,8 +15,8 @@ class UserSeeder extends Seeder
     {
         // Membuat user dengan peran teacher
         $teacher1 = User::create([
-            'name' => 'Budi Santoso',
-            'email' => 'budi.teacher@permatakiddo.com',
+            'name' => 'Rizki Giga',
+            'email' => 'rizki@permatakiddo.com',
             'password' => Hash::make('password123'),
             'role' => 'teacher',
             'gender' => 'male',
@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
 
         $teacher2 = User::create([
             'name' => 'Siti Rahma',
-            'email' => 'siti.teacher@permatakiddo.com',
+            'email' => 'siti@permatakiddo.com',
             'password' => Hash::make('password123'),
             'role' => 'teacher',
             'gender' => 'female',
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
 
         $teacher3 = User::create([
             'name' => 'Andi Wijaya',
-            'email' => 'andi.teacher@permatakiddo.com',
+            'email' => 'andi@permatakiddo.com',
             'password' => Hash::make('password123'),
             'role' => 'teacher',
             'gender' => 'male',
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
         // Membuat user dengan peran parent
         $parent1 = User::create([
             'name' => 'Ahmad Husein',
-            'email' => 'ahmad.parent@permatakiddo.com',
+            'email' => 'ahmad@permatakiddo.com',
             'password' => Hash::make('password123'),
             'role' => 'parent',
             'gender' => 'male',
@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
 
         $parent2 = User::create([
             'name' => 'Dewi Susanti',
-            'email' => 'dewi.parent@permatakiddo.com',
+            'email' => 'dewi@permatakiddo.com',
             'password' => Hash::make('password123'),
             'role' => 'parent',
             'gender' => 'female',
@@ -67,7 +67,7 @@ class UserSeeder extends Seeder
 
         $parent3 = User::create([
             'name' => 'Rudi Hermawan',
-            'email' => 'rudi.parent@permatakiddo.com',
+            'email' => 'rudi@permatakiddo.com',
             'password' => Hash::make('password123'),
             'role' => 'parent',
             'gender' => 'male',

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('payment_date');
             $table->string('month')->nullable(); // For monthly payments
             $table->string('academic_year');
-            $table->string('receipt_number')->unique();
+            $table->string('receipt_number')->nullable()->unique(); // Dibuat nullable karena tidak diisi di seeder
             $table->text('notes')->nullable();
             $table->string('status')->default('paid');
             $table->timestamps();

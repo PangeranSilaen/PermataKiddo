@@ -12,34 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Jalankan semua seeder secara berurutan dengan memperhatikan dependensi
+        // Jalankan hanya AdminSeeder dan UserSeeder
         $this->call([
             // Pertama buat admin dan role
             AdminSeeder::class,
             
-            // Buat user (parent)
+            // Buat user (parent dan teacher)
             UserSeeder::class,
-            
-            // Buat guru
-            TeacherSeeder::class,
-            
-            // Buat kelas (membutuhkan guru)
-            ClassRoomSeeder::class,
-            
-            // Buat pendaftaran siswa (membutuhkan parent/user)
-            RegistrationSeeder::class,
-            
-            // Buat siswa (idealnya setelah registrasi)
-            StudentSeeder::class,
-            
-            // Buat jadwal (membutuhkan kelas dan guru)
-            ScheduleSeeder::class,
-            
-            // Buat pembayaran (membutuhkan siswa)
-            PaymentSeeder::class,
-            
-            // Buat prestasi (membutuhkan siswa)
-            AchievementSeeder::class,
         ]);
     }
 }
