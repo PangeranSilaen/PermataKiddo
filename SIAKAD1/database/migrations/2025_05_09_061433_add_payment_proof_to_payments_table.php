@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->string('payment_proof')->nullable()->after('notes');
+            if (!Schema::hasColumn('payments', 'payment_proof')) {
+                $table->string('payment_proof')->nullable()->after('notes');
+            }
         });
     }
 

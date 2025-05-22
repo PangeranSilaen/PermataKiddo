@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->foreignId('class_room_id')->nullable()->constrained('class_rooms')->nullOnDelete()->after('user_id');
+            if (!Schema::hasColumn('students', 'class_room_id')) {
+                $table->foreignId('class_room_id')->nullable()->constrained('class_rooms')->nullOnDelete()->after('user_id');
+            }
         });
 
         Schema::table('achievements', function (Blueprint $table) {
@@ -31,7 +33,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('students', function (Blueprint $table) {
-            //
+            if (Schema::hasColumn('students', 'class_room_id')) {
+                $table->dropConstrainedForeignId('class_room_id');
+            }
         });
     }
 };
