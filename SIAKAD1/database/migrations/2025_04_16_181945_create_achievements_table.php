@@ -15,21 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->foreignId('teacher_id')->constrained()->onDelete('cascade');
-            // Kolom asli yang mungkin masih digunakan aplikasi
             $table->string('subject');
-            $table->string('achievement_type')->nullable(); // Dibuat nullable karena sudah digantikan achievement_description
-            $table->decimal('score', 5, 2)->nullable(); // Dibuat nullable karena bentuk score sudah berubah menjadi huruf
-            $table->text('description')->nullable();
-            $table->date('achievement_date')->nullable();
-            $table->string('semester')->nullable();
+            $table->date('achievement_date');
+            $table->string('semester');
             $table->string('academic_year');
-            
-            // Kolom-kolom baru yang digunakan oleh seeder
-            $table->string('period')->nullable(); // Kolom yang digunakan seeder untuk menyimpan periode/semester
-            $table->text('achievement_description')->nullable(); // Deskripsi capaian pembelajaran
-            $table->string('notes')->nullable(); // Catatan tambahan
-            $table->date('date_recorded')->nullable(); // Tanggal pencatatan
-            
+            $table->json('achievements')->nullable();
             $table->timestamps();
         });
     }

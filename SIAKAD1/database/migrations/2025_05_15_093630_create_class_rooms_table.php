@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('class_rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('level'); // Tambahkan kolom level
-            $table->integer('capacity')->default(0); // Tambahkan kolom capacity
             $table->foreignId('teacher_id')->nullable()->constrained('teachers')->nullOnDelete();
-            $table->string('academic_year')->default(date('Y').'/'.((int)date('Y')+1)); // Tambahkan nilai default
+            $table->string('academic_year');
             $table->text('description')->nullable();
             $table->timestamps();
         });
