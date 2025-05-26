@@ -26,7 +26,7 @@ PermataKiddo adalah Sistem Informasi Akademik (SIAKAD) berbasis web yang diranca
 - **Database**: PostgreSQL
 - **Frontend**: Blade Templates, Livewire, AlpineJS
 - **Autentikasi**: Role Based Access Control (Filament Shield)
-- **Package Manager**: Composer (PHP), npm (JavaScript)
+- **Package Manager**: Composer (PHP)
 - **Styling**: TailwindCSS
 
 ## Prasyarat
@@ -37,7 +37,6 @@ Sebelum menginstal dan menjalankan aplikasi, pastikan sistem Anda memenuhi persy
 - Composer
 - Node.js dan npm
 - PostgreSQL
-- Ekstensi PHP: BCMath, Ctype, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML
 
 ## Instalasi
 
@@ -79,13 +78,7 @@ DB_PASSWORD=
 php artisan migrate --seed
 ```
 
-6. **Compile assets**
-
-```bash
-npm run dev
-```
-
-7. **Jalankan server**
+6. **Jalankan server**
 
 ```bash
 php artisan serve
@@ -152,9 +145,6 @@ Untuk mengkustomisasi panel admin, modifikasi file di direktori `app/Filament/`.
 2. **Error Class not found**: Coba jalankan `composer dump-autoload`
 3. **Error database**: Pastikan konfigurasi database di `.env` sudah benar
 
-## Lisensi
-
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 
 ## Kredit
 
