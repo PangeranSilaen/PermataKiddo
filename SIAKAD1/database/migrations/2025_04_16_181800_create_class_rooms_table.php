@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('class_rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers')->nullOnDelete();
+            $table->unsignedBigInteger('teacher_id')->nullable(); // Kolom tetap ada tapi tanpa constraint foreign key
             $table->string('academic_year');
             $table->text('description')->nullable();
             $table->timestamps();

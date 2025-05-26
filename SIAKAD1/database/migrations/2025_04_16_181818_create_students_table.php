@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('class_room_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('class_room_id')->nullable(); // Kolom tetap ada tapi tanpa constraint foreign key
             $table->string('name');
             $table->string('registration_number')->unique();
             $table->date('birth_date');
