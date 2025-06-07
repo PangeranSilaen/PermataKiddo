@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -34,7 +35,24 @@ return new class extends Migration
     {
         Schema::table('students', function (Blueprint $table) {
             if (Schema::hasColumn('students', 'class_room_id')) {
-                $table->dropConstrainedForeignId('class_room_id');
+                try {
+                    // Periksa apakah constraint ada sebelum menghapusnya
+                    $constraintExists = DB::select(
+                        "SELECT constraint_name 
+                         FROM information_schema.table_constraints 
+                         WHERE table_name = 'students' 
+                         AND constraint_name = 'students_class_room_id_foreign'"
+                    );
+                    
+                    if (!empty($constraintExists)) {
+                        $table->dropForeign(['class_room_id']);
+                    }
+                    
+                    $table->dropColumn('class_room_id');
+                } catch (\Exception $e) {
+                    // Hanya hapus kolom jika constraint tidak dapat dihapus
+                    $table->dropColumn('class_room_id');
+                }
             }
         });
     }

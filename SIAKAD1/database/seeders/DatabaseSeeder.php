@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             
             // Buat user (parent dan teacher)
             UserSeeder::class,
+
+            // Buat guru
+            TeacherSeeder::class,
         ]);
     }
 }

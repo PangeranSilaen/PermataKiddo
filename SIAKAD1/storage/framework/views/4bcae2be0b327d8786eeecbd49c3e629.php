@@ -210,12 +210,12 @@
                             </div>
                         </td>
                         <td>
-                            <i class="far fa-clock" style="color: var(--primary-color);"></i> 
-                            <?php echo e($sch->start_time); ?> - <?php echo e($sch->end_time); ?>
+                            <i class="far fa-clock" style="color: var(--primary-color);"></i>
+                            <?php echo e(\Carbon\Carbon::parse($sch->start_time)->format('H:i')); ?> - <?php echo e(\Carbon\Carbon::parse($sch->end_time)->format('H:i')); ?>
 
                         </td>
                         <td>
-                            <i class="fas fa-door-open" style="color: var(--text-light);"></i> 
+                            <i class="fas fa-door-open" style="color: var(--text-light);"></i>
                             <?php echo e($sch->room); ?>
 
                         </td>
@@ -228,6 +228,60 @@
             <div class="text-center p-4">
                 <i class="fas fa-calendar-times" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: var(--spacing-md);"></i>
                 <p>Belum ada jadwal untuk kelas ini.</p>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+
+<?php $__currentLoopData = $children; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $child): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<div class="card mb-4 animate-fade-in">
+    <div class="card-header success">
+        <h5 class="mb-0"><i class="fas fa-trophy btn-icon"></i>Laporan Capaian Pembelajaran - <?php echo e($child->name); ?></h5>
+    </div>
+    <div class="card-body">
+        <?php
+            $achievements = $child->achievements()->orderByDesc('achievement_date')->get();
+        ?>
+        <?php if(count($achievements)): ?>
+        <div class="table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Semester</th>
+                        <th>Tahun Ajaran</th>
+                        <th>Jumlah Capaian</th>
+                        <th>Detail Capaian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $__currentLoopData = $achievements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $ach): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <tr>
+                        <td><?php echo e($ach->achievement_date ? \Carbon\Carbon::parse($ach->achievement_date)->format('d-m-Y') : '-'); ?></td>
+                        <td><?php echo e($ach->semester); ?></td>
+                        <td><?php echo e($ach->academic_year); ?></td>
+                        <td>
+                            <?php
+                                $capaianArr = is_array($ach->achievements) ? $ach->achievements : ($ach->achievements ? json_decode($ach->achievements, true) : []);
+                            ?>
+                            <?php echo e(count($capaianArr)); ?> capaian
+                        </td>
+                        <td>
+                            <a href="<?php echo e(route('parent.achievement.detail', $ach->id)); ?>" class="btn btn-sm btn-info">
+                                Lihat Detail
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+            </table>
+        </div>
+        <?php else: ?>
+            <div class="text-center p-4">
+                <i class="fas fa-trophy" style="font-size: 3rem; color: var(--text-lighter); margin-bottom: var(--spacing-md);"></i>
+                <p>Belum ada laporan capaian pembelajaran.</p>
             </div>
         <?php endif; ?>
     </div>
