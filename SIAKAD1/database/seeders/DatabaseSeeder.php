@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,16 +13,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Jalankan hanya AdminSeeder dan UserSeeder
-        $this->call([
-            // Pertama buat admin dan role
-            AdminSeeder::class,
-            
-            // Buat user (parent dan teacher)
-            UserSeeder::class,
+        // Buat role dasar
+        $roles = ['super_admin', 'admin', 'teacher', 'parent'];
+        foreach ($roles as $role) {
+            Role::firstOrCreate(['name' => $role]);
+        }
 
-            // Buat guru
+        // Jalankan semua seeder
+        $this->call([
+            AdminSeeder::class,
             TeacherSeeder::class,
+            ClassRoomSeeder::class,
+            StudentSeeder::class,
+            ScheduleSeeder::class,
+            AchievementSeeder::class,
+            // PaymentSeeder::class,
         ]);
     }
 }
